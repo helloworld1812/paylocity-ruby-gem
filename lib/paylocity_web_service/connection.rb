@@ -70,9 +70,9 @@ module PaylocityWebService
       response = connection.send(method) do |request|
         case method
         when :get, :delete
-          request.url(URI.encode(path), options)
+          request.url(path, options)
         when :post, :put
-          request.path = URI.encode(path)
+          request.path = path
           request.body = envelope_encrypt(options)
         end
       end
