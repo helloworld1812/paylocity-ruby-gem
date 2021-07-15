@@ -12,6 +12,10 @@ module PaylocityWebService
       def create_employee(options={})
         post("/api/v2/companies/#{company_id}/employees", options)
       end
+
+      def create_staging_employee(options={})
+        post("/api/v2/weblinkstaging/companies/#{company_id}/employees/newemployees", options)
+      end
     end
   end
 end

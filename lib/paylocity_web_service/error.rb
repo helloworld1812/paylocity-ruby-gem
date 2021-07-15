@@ -1,66 +1,87 @@
 module PaylocityWebService
-  class Error < StandardError
+  class Error < StandardError    
+    attr_accessor :response
+
     # Returns the appropriate PaylocityWebService::Error subclass based
     # on status and response message
     #
     # @param [Hash] response HTTP response
     # @return [PaylocityWebService::Error]
     def self.from_response(response)
-      case response[:status]
+      status  = response[:status].to_i
+
+      if klass = case status
       when 400
-        raise PaylocityWebService::BadRequest, response_values(response)
+        PaylocityWebService::BadRequest
       when 401
-        raise PaylocityWebService::ClientError, response_values(response)
+        PaylocityWebService::ClientError
       when 403
-        raise PaylocityWebService::Forbidden, response_values(response)
+        PaylocityWebService::Forbidden
       when 404
-        raise PaylocityWebService::NotFound, response_values(response)
+        PaylocityWebService::NotFound
       when 405
-        raise PaylocityWebService::MethodNotAllowed, response_values(response)
+        PaylocityWebService::MethodNotAllowed
       when 406
-        raise PaylocityWebService::NotAcceptable, response_values(response)
+        PaylocityWebService::NotAcceptable
       when 409
-        raise PaylocityWebService::Conflict, response_values(response)
+        PaylocityWebService::Conflict
       when 415
-        raise PaylocityWebService::UnsupportedMediaType, response_values(response)
+        PaylocityWebService::UnsupportedMediaType
       when 422
-        raise PaylocityWebService::UnprocessableEntity, response_values(response)
+        PaylocityWebService::UnprocessableEntity
       when 451
-        raise PaylocityWebService::UnavailableForLegalReasons, response_values(response)
+        PaylocityWebService::UnavailableForLegalReasons
       when 400..499
-        raise PaylocityWebService::ClientError, response_values(response)
+        PaylocityWebService::ClientError
       when 500
-        raise PaylocityWebService::InternalServerError, response_values(response)
+        PaylocityWebService::InternalServerError
       when 501
-        raise PaylocityWebService::NotImplemented, response_values(response)
+        PaylocityWebService::NotImplemented
       when 502
-        raise PaylocityWebService::BadGateway, response_values(response)
+        PaylocityWebService::BadGateway
       when 503
-        raise PaylocityWebService::ServiceUnavailable, response_values(response)
+        PaylocityWebService::ServiceUnavailable
       when 500..599
-        raise PaylocityWebService::ServerError, response_values(response)
+        PaylocityWebService::ServerError
       end
-    end
 
-    private
-
-    def self.response_values(response)
-      return nil if response.nil?
-
-      {
-        status: response.status,
-        headers: response.response_headers,
-        body: response.body,
-        request: {
-          method: response.method,
-          url_path: response.url.path,
-          params: response.params,
-          headers: response.request_headers,
-          body: response.request_body
-        }
-      }
+      klass.new(response)
     end
   end
+
+  private
+
+  def initialize(response=nil)
+    @response = response
+    super(build_error_message)
+  end
+
+  def build_error_message
+    return nil if response.nil?
+
+    message = "Status: #{response&.status} \n"
+    message << "Method: #{response&.method&.to_s.upcase} \n" 
+    message << "URL: #{response&.url&.to_s} \n"
+    message << "Body: \n"
+    message << JSON.pretty_generate(response&.body)
+    message
+
+    # message = {
+    #   status: response.status,
+    #   headers: response.response_headers,
+    #   body: response.body,
+    #   request: {
+    #     method: response.method,
+    #     url_path: response.url.path,
+    #     params: response.params,
+    #     headers: response.request_headers,
+    #     body: response.request_body
+    #   }
+    # }
+    # JSON.pretty_generate(message)
+
+  end
+end
 
   # Raised on errors in the 400-499 range
   class ClientError < Error; end
