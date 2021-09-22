@@ -5,6 +5,7 @@ require 'paylocity_web_service/error'
 require 'paylocity_web_service/client/companies'
 require 'paylocity_web_service/client/employees'
 require 'paylocity_web_service/client/credentials'
+require 'paylocity_web_service/client/onboardings'
 
 module PaylocityWebService
   class Client
