@@ -15,6 +15,7 @@ module PaylocityWebService
     include PaylocityWebService::Client::Employees
     include PaylocityWebService::Client::Companies
     include PaylocityWebService::Client::Credentials
+    include PaylocityWebService::Client::Onboardings
 
     def initialize(options={})
       options = PaylocityWebService.options.merge(options)
