@@ -96,7 +96,7 @@ module PaylocityWebService
         conn.request :retry, max: 2
         conn.request :json
 
-        conn.use PaylocityWebService::Middleware::Response::RaiseError
+        # conn.use PaylocityWebService::Middleware::Response::RaiseError
         conn.use FaradayMiddleware::ParseJson, :content_type => /\bjson$/
       end
 
