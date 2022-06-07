@@ -25,7 +25,7 @@ module PaylocityWebService
       end
 
       # Paylocity hasn't provide a way to check the connectivity of the API, we have to fire a request to check it.
-      def company_connected
+      def company_connected?
         return true if company_codes('costCenter1').status == 200
         return true if company_schema.code == 200
         false
