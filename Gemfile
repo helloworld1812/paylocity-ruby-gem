@@ -8,7 +8,7 @@ gemspec
 # The following gems are required for local development and will not be included by `gem install mygem` or `bundle add mygem`.
 group :development, :test do
   gem 'awesome_print', require: 'ap'
-  gem 'pry-byebug'
+  gem 'pry'
   gem 'rubocop'
   gem 'rake'
   gem 'bundler'
