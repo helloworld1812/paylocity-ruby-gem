@@ -1,6 +1,5 @@
 require 'json'
 require 'base64'
-require 'digest/md5'
 require 'paylocity_web_service/cache'
 
 module PaylocityWebService
