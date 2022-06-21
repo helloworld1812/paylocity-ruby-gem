@@ -8,10 +8,11 @@ gemspec
 # The following gems are required for local development and will not be included by `gem install mygem` or `bundle add mygem`.
 group :development, :test do
   gem 'awesome_print', require: 'ap'
+  gem 'rails'
   gem 'pry'
   gem 'rubocop'
   gem 'rake'
   gem 'bundler'
   gem "rspec", "~> 3.0"
-  gem 'webmock', '~> 3.8', '>= 3.8.2'
+  gem 'dotenv'
 end
