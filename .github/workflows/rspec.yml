@@ -35,4 +35,4 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Run tests
-      run: bundle exec rspec
+      run: SANDBOX_PAYLOCITY_CLIENT_ID=${{ secrets.SANDBOX_PAYLOCITY_CLIENT_ID }} SANDBOX_PAYLOCITY_CLIENT_SECRET=${{ secrets.SANDBOX_PAYLOCITY_CLIENT_SECRET }} SANDBOX_PAYLOCITY_DEMO_COMPANY_ID=${{ secrets.SANDBOX_PAYLOCITY_DEMO_COMPANY_ID }} SANDBOX_PAYLOCITY_ENDPOINT=${{ secrets.SANDBOX_PAYLOCITY_ENDPOINT }} SANDBOX_PAYLOCITY_PUBLIC_KEY="${{ secrets.SANDBOX_PAYLOCITY_PUBLIC_KEY }}" bundle exec rspec

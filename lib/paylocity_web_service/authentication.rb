@@ -1,11 +1,12 @@
 require 'json'
 require 'base64'
+require 'digest/md5'
 require 'paylocity_web_service/cache'
 
 module PaylocityWebService
   module Authentication
     def access_token
-      token = PaylocityWebService::Cache.read(access_token_cache_key)
+      token = cache_store.read(access_token_cache_key)
 
       if token.nil?
         refresh_token
@@ -26,15 +27,24 @@ module PaylocityWebService
         }
       end
 
-
       body = JSON.parse(resp.body)
       token, expires_in = body['access_token'], body['expires_in']
-      PaylocityWebService::Cache.write(access_token_cache_key, token, expires_in)
+      cache_store.write(access_token_cache_key, token, expires_in: expires_in)
       token
     end
 
     def access_token_cache_key
-      'access_token_cache_key'
+      raise 'company_id is required' if company_id.nil?
+      "PaylocityCompany/#{company_id}/AccessToken/#{endpoint}"
+    end
+
+
+    def cache_store
+      if defined?(Rails)
+        Rails.cache
+      else
+        PaylocityWebService::Cache
+      end
     end
 
     def basic_auth_token
