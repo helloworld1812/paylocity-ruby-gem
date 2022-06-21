@@ -10,7 +10,8 @@ module PaylocityWebService
     end
 
     def self.write(key, value, options = {} )
-      expires_at = (Time.now.to_i + options[:expires_in].to_i) - 60
+      expires_in = options[:expires_in] || 3600
+      expires_at = (Time.now.to_i + expires_in.to_i) - 60
       store[key] = { value: value, expires_at: expires_at}
     end
 
