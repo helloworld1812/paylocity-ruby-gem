@@ -95,7 +95,7 @@ module PaylocityWebService
         conn.use Faraday::Request::Authorization, :Bearer, access_token
         conn.request :retry, max: 2
         conn.request :json
-        conn.request :instrumentation
+        conn.request :instrumentation, name: 'request.paylocity'
 
         # conn.use PaylocityWebService::Middleware::Response::RaiseError
         conn.use FaradayMiddleware::ParseJson, :content_type => /\bjson$/
