@@ -33,8 +33,8 @@ module PaylocityWebService
     end
 
     def access_token_cache_key
-      raise 'company_id is required' if company_id.nil?
-      "PaylocityCompany/#{company_id}/AccessToken/#{endpoint}"
+      raise 'client_id is required' if client_id.nil?
+      "PaylocityClientID/#{client_id}/AccessToken/#{endpoint}"
     end
 
 
